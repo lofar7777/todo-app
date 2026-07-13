@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./security/AuthContext";
 export default function LoginComponent() {
  <h1>Lets start with your login!</h1>
   const [username, setUsername] = useState("in28minutes");
   const [password, setPassword] = useState("");
   const navigate=useNavigate();
+  const authContext=useAuth()
 
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -19,15 +21,15 @@ export default function LoginComponent() {
     setPassword(event.target.value);
   }
 
-  function handleButton() {
-    if (username.trim() !== "" && password === "dummy") {
-      setShowSuccess(true);
+  function handleButton() { 
+    if (authContext.login(username,password)) {
+    //   setShowSuccess(true);
       setShowError(false);
       navigate(`/welcome/${username}`)//use tild whrn we want a value to change 
       // console.log("success")
     } else {
       // console.log("failed")
-      setShowSuccess(false);
+    //   setShowSuccess(false);     
       setShowError(true);
     }
   }
@@ -80,9 +82,7 @@ export default function LoginComponent() {
       <SuccessMsgComponenet/> */}
 
       {/* Easier way insteda of using components */}
-      {showSuccess && (
-        <div className="successMsg">Authentication successfull</div>
-      )}
+     
       {showError && <div className="errorMsg">Authentication Failed</div>}
     </div>
   );
