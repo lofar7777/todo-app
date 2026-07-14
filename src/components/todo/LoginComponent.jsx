@@ -8,7 +8,7 @@ export default function LoginComponent() {
   const navigate=useNavigate();
   const authContext=useAuth()
 
-  const [showSuccess, setShowSuccess] = useState(false);
+//   const [showSuccess, setShowSuccess] = useState(false);
 
   const [showError, setShowError] = useState(false);
 
