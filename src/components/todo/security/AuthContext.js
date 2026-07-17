@@ -9,6 +9,7 @@ export const useAuth= ()=>useContext(AuthContext)
 export default function AuthProvider({children}){
     // const[number,setNumber]=useState(10 )
     const[isAuthenticated,SetAuthenticated]=useState(false)
+    const[username,setUsername]=useState(null)
 
     // setInterval(()=>setNumber(number+1),10000)
     // const valueTobeShared={number,isAuthenticated,SetAuthenticated};//this is not recommended we use shorthand instead like below
@@ -16,17 +17,19 @@ export default function AuthProvider({children}){
     function login(username,password){
       if (username.trim() !== "" && password === "dummy") {
        SetAuthenticated(true)
+       setUsername(username)
       return true
      
     } else {
       SetAuthenticated(false)
+      setUsername(null)
       return false
     }
   }
 
     
     return(
-        <AuthContext.Provider value={{isAuthenticated,SetAuthenticated,login}}>
+        <AuthContext.Provider value={{isAuthenticated,SetAuthenticated,login,username}}>
             {children}
         </AuthContext.Provider>
 
