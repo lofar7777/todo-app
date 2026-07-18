@@ -1,8 +1,9 @@
-import { useParams } from "react-router-dom"
-import { retrieveTodoApi } from "./api/TodosApiService"
+import { useNavigate, useParams } from "react-router-dom"
+import { addTodoApi, retrieveTodoApi, updateTodoApi } from "./api/TodosApiService"
 import { useAuth } from "./security/AuthContext"
 import { useEffect, useState } from "react"
 import { ErrorMessage, Field, Form, Formik } from "formik"
+import moment from "moment"
 
 export default function TodoComponent(){
 
@@ -11,11 +12,14 @@ export default function TodoComponent(){
    const{id}=useParams()
    const[description,setDescription]=useState("")
    const[targetDate,setTargetDate]=useState("")
+   const navigate=useNavigate() 
 
    useEffect(
        ()=>retrieveTodo(),[id]
     )
    function retrieveTodo(){
+        
+    if(id!=-1){
         retrieveTodoApi(username,id)
         .then(
             response=>{console.log(response)
@@ -24,10 +28,37 @@ export default function TodoComponent(){
             }
         )
         .catch(error=>console.log(error))
-}
+}}
  function onSubmit(values){
     console.log(values)
- }
+    const todo={
+        username:username,
+        id:id,
+        description:values.description,
+        targetDate:values.targetDate,
+        done:false
+    }
+    console.log(todo)
+
+    if(id==-1){
+        addTodoApi(username,todo)
+        .then(
+            response=>{
+                navigate('/todos')
+            }
+        )
+        .catch(error=>console.log(error))
+    }
+    else{
+    updateTodoApi(username,id,todo)
+     .then(
+            response=>{
+                navigate('/todos')
+            }
+        )
+        .catch(error=>console.log(error))
+ }}
+
  function validate(values){
     let errors={
         // description:"Enter valid description",
@@ -35,9 +66,9 @@ export default function TodoComponent(){
     }
     if(values.description.length<5)
     errors.description="Enter at 5 characters"
-    if(!values.targetDate)
+    if(!values.targetDate||!moment(values.targetDate).isValid)
     errors.targetDate="Enter valid date"
-    console.log(values)
+    // console.log(values)
     return errors
  }
     return(

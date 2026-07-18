@@ -24,6 +24,7 @@ export default function ListTodosComponent(){
                 refreshTodos() 
             },[]     
         )
+        
         function refreshTodos(){
             retrieveTodosForUser(username)
             .then(response=>
@@ -34,6 +35,7 @@ export default function ListTodosComponent(){
                 )
             .catch(error=>console.log(error))
         }
+    
         function deleteTodo(id){
             console.log("clicked"+id)
             deleteTodoApi(username,id)
@@ -48,6 +50,10 @@ export default function ListTodosComponent(){
           function updateTodo(id){
             console.log("clicked"+id)
             navigate(`/todo/${id}`)
+        }
+        
+        function addNewTodo(){
+            navigate('/todo/-1')
         }
 
     return(
@@ -82,6 +88,7 @@ export default function ListTodosComponent(){
                      
                 </tbody>
             </table>
+            <div className="btn btn-success m-5" onClick={addNewTodo}>Add New Todo</div>
         </div>
         </div>
     )
