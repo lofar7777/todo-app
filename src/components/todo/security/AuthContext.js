@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { executeBasicAuthService } from "../api/HelloWorldApiService";
+import { executeBasicAuthService, executeJwtAuthService } from "../api/AuthenticationApiService";
+import { apiCLient } from "../api/ApiClient";
 
 
  export const AuthContext=createContext()
@@ -28,18 +29,51 @@ export default function AuthProvider({children}){
 //       return false
 //     }
 //   }
-async function login(username,password){
-const baToken='Basic '+ window.btoa(username+":"+password)
+// async function login(username,password){
+// const baToken='Basic '+ window.btoa(username+":"+password)
+// try{
+//  const response=await executeBasicAuthService(baToken)
+// if (response.status==200) {
+//        SetAuthenticated(true)
+//        setUsername(username)
+//        setToken(baToken)
+//         apiCLient.interceptors.request.use(
+//         (config)=>{
+//             console.log("Interceptes and added token")
+//             config.headers.Authorization=baToken
+//             return config
+//         }
+//       )
+//       return true
+//     } 
+//     else {
+//       logout()  
+//       return false
+//     }
+// }catch(error){
+//       logout()
+//       return false
+// }
+//   }
 
+async function login(username,password){
 try{
- const response=await executeBasicAuthService(baToken)
+const response=await executeJwtAuthService(username,password)
 if (response.status==200) {
+       const jwtToken='Bearer '+ response.data.token
        SetAuthenticated(true)
        setUsername(username)
-       setToken(baToken)
+       setToken(jwtToken)
+        apiCLient.interceptors.request.use(
+        (config)=>{
+            console.log("Interceptes and added token")
+            config.headers.Authorization=jwtToken
+            return config
+        }
+      )
       return true
-     
-    } else {
+    } 
+    else {
       logout()  
       return false
     }
