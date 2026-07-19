@@ -1,10 +1,13 @@
 import { Link,useParams } from "react-router-dom";
 import { useState } from "react";
 import { retrieveHelloWorldPathVar } from "./api/HelloWorldApiService";
+import { useAuth } from "./security/AuthContext";
 
 export default function WelcomeComponent() {
     const {username} =useParams();
     const[message,setMessage]=useState(null)
+    const authContext=useAuth()
+
     // console.log(username)
     function callHelloWorld(){
         // axios.get("http://localhost:8080/hello-world")
@@ -17,7 +20,7 @@ export default function WelcomeComponent() {
         // .catch((error)=>ShowError(error))
         // .finally(()=>console.log("clean up"))
         
-        retrieveHelloWorldPathVar("Abhishek")
+        retrieveHelloWorldPathVar("Abhishek",authContext.token)
         .then((response)=>ShowSucess(response))
         .catch((error)=>ShowError(error))
         .finally(()=>console.log("clean up"))

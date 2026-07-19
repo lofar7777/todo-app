@@ -15,5 +15,21 @@ const apiCLient=axios.create(
 export const retrieveHelloWorld
                           =()=>apiCLient.get("/hello-world-bean")
 
+                            
 export const retrieveHelloWorldPathVar
-                          =(username)=>apiCLient.get(`/hello-world/path-variable/${username}`)
+                          =(username,token)=>apiCLient.get(`/hello-world/path-variable/${username}`,
+                            {
+                                headers:{
+                                    Authorization:token
+                              }
+                            }
+                          )
+
+export const executeBasicAuthService
+                          =(token)=>apiCLient.get(`/basicauth`,
+                            {
+                                headers:{
+                                    Authorization:token
+                              }
+                            }
+                          )

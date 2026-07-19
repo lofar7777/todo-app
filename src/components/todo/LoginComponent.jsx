@@ -21,8 +21,8 @@ export default function LoginComponent() {
     setPassword(event.target.value);
   }
 
-  function handleButton() { 
-    if (authContext.login(username,password)) {
+  async function handleButton() { 
+    if (await authContext.login(username,password)) {
     //   setShowSuccess(true);
       setShowError(false);
       navigate(`/welcome/${username}`)//use tild whrn we want a value to change 

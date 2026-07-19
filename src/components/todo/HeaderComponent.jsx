@@ -5,11 +5,9 @@ export default function HeaderComponent(){
     
     const authContext=useAuth()
     const isAuthenticated=authContext.isAuthenticated
+    const logout = authContext.logout;  
     // console.log(authContext) 
-    function logout(){
-        authContext.isAuthenticated(false)
-    }
-
+   
     return(
               <header className="border-bottom border-light border-5 mb-5 p-2">
             <div className="container">
